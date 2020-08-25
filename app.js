@@ -61,7 +61,7 @@ app.use(function(err, req, res, next) {
   res.redirect('/');
 });
 
-app.listen( PORT, 'localhost', ()=> {
+app.listen( PORT, ()=> {
   console.log("Connected to Server")
 })
 
