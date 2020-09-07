@@ -82,6 +82,7 @@ router.post('/login', cors.corsOption, (req,res,next)=> {
       var token = authenticate.getToken({_id:req.user._id});
       res.statusCode=200;
       res.setHeader('Content-Type','application/json');
+      res.cookie('jwt',token,{sameSite:"strict"});
       res.json({success:true, status:"Logged in", token:token});
       console.log(token);
     });

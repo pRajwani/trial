@@ -18,6 +18,7 @@ router.route('/')
     res.sendStatus(200)
 })
 .get(cors.cors,(req,res,next)=> {
+    console.log("Request for all post");
     Posts.find({})
     .populate('postAuthor')
     .then((posts)=>{
