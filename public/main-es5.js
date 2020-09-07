@@ -1540,7 +1540,7 @@
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](15, "li", 7);
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](16, "div", 10);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](16, "a", 10);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](17, "div", 11);
 
@@ -5253,6 +5253,9 @@
               minlength: "Description must be atleast 10 characters long"
             }
           };
+          this.selectedFile = {
+            name: ''
+          };
         }
 
         _createClass(UpdatePostComponent, [{
@@ -5262,7 +5265,7 @@
 
             if (localStorage.getItem('JWT')) {
               this.postService.getPost(this.route.snapshot.paramMap.get('postId')).subscribe(function (post) {
-                _this24.post = post;
+                _this24.post = post; //this.selectedFile.name=this.post.image;
 
                 _this24.createForm();
               });
@@ -5276,7 +5279,8 @@
             this.updateForm = this.fb.group({
               Title: [this.post.Title, [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].minLength(2), _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].maxLength(100)]],
               Description: [this.post.Description, [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].minLength(10)]],
-              Category: [this.post.Category, [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required]]
+              Category: [this.post.Category, [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required]],
+              image: [this.post.image]
             });
             this.updateForm.valueChanges.subscribe(function (data) {
               _this25.onValueChanges(data);
@@ -5316,15 +5320,22 @@
           value: function updatePost() {
             var _this26 = this;
 
+            console.log(this.selectedFile);
+            var uploadData = null;
             this.updatedPost = this.updateForm.value;
-            this.post.image = this.selectedFile.name;
-            var uploadData = new FormData();
-            uploadData.append('imageFile', this.selectedFile, this.selectedFile.name);
+
+            if (this.selectedFile.name !== '') {
+              this.updatedPost.image = this.selectedFile.name;
+              this.post.image = this.selectedFile.name;
+              uploadData = new FormData();
+              uploadData.append('imageFile', this.selectedFile, this.selectedFile.name);
+            }
+
             var post_id = this.route.snapshot.paramMap.get('postId');
 
             if (this.updatedPost != this.post) {
               this.postService.updatePost(post_id, this.updatedPost).subscribe(function (post) {
-                _this26.imageUploadService.uploadImage(uploadData).subscribe();
+                if (uploadData !== null) _this26.imageUploadService.uploadImage(uploadData).subscribe();
 
                 _this26.router.navigate(['profile']);
               });
@@ -5355,7 +5366,7 @@
         },
         decls: 48,
         vars: 7,
-        consts: [[1, "container", "contact-form"], ["enctype", "multipart/form-data", "novalidate", "", 3, "formGroup", "ngSubmit"], ["uform", "ngForm"], [1, "row"], [1, "col-md-6"], ["hidden", "", 1, "form-group"], ["type", "text", "formControlName", "Category", "id", "Title", "name", "Title", "placeholder", "Enter the Title", "required", "", 1, "form-control"], [4, "ngIf"], [1, "form-group"], ["type", "text", "formControlName", "Title", "id", "Title", "name", "Title", "placeholder", "Enter the Title", "required", "", 1, "form-control"], ["formControlName", "Category", "id", "Category", "name", "Category", "required", "", 1, "form-control", "show-tick"], ["value", "", "disabled", "", "selected", "", "hidden", "", 1, "form-control"], ["value", "Sports", 1, "form-control"], ["value", "Education", 1, "form-control"], ["value", "Fashion", 1, "form-control"], ["value", "Technology", 1, "form-control"], ["value", "Food", 1, "form-control"], ["value", "LifeStyle", 1, "form-control"], ["for", "fileupload", 1, "form-control", "file-upload", "btn", "btn-primary"], ["xmlns", "http://www.w3.org/2000/svg", "viewBox", "0 0 24 24", "width", "24", "height", "24"], ["fill", "none", "d", "M0 0h24v24H0z"], ["d", "M7 20.981a6.5 6.5 0 0 1-2.936-12 8.001 8.001 0 0 1 15.872 0 6.5 6.5 0 0 1-2.936 12V21H7v-.019zM13 13h3l-4-5-4 5h3v4h2v-4z", "fill", "rgba(255,255,255,1)"], ["type", "file", "name", "image", "id", "fileupload", "formControlName", "image", 3, "change"], [1, "form-group", "buttons"], ["type", "submit", "name", "btnSubmit", "value", "Post", 1, "btn", "btn-primary", "btnContact", 3, "disabled"], ["type", "submit", "name", "btncancel", "routerLink", "/profile", "value", "Cancel", 1, "btn", "btn-primary", "btnContact"], ["name", "Description", "formControlName", "Description", "placeholder", "Enter the Description", "required", "", 1, "form-control", 2, "width", "100%", "height", "150px"]],
+        consts: [[1, "container", "contact-form"], ["enctype", "multipart/form-data", "novalidate", "", 3, "formGroup", "ngSubmit"], ["uform", "ngForm"], [1, "row"], [1, "col-md-6"], ["hidden", "", 1, "form-group"], ["type", "text", "formControlName", "Title", "id", "Title", "name", "Title", "placeholder", "Enter the Title", "required", "", 1, "form-control"], [4, "ngIf"], [1, "form-group"], ["formControlName", "Category", "id", "Category", "name", "Category", "required", "", 1, "form-control", "show-tick"], ["value", "", "disabled", "", "selected", "", "hidden", "", 1, "form-control"], ["value", "Sports", 1, "form-control"], ["value", "Education", 1, "form-control"], ["value", "Fashion", 1, "form-control"], ["value", "Technology", 1, "form-control"], ["value", "Food", 1, "form-control"], ["value", "LifeStyle", 1, "form-control"], ["for", "fileupload", 1, "form-control", "file-upload", "btn", "btn-primary"], ["xmlns", "http://www.w3.org/2000/svg", "viewBox", "0 0 24 24", "width", "24", "height", "24"], ["fill", "none", "d", "M0 0h24v24H0z"], ["d", "M7 20.981a6.5 6.5 0 0 1-2.936-12 8.001 8.001 0 0 1 15.872 0 6.5 6.5 0 0 1-2.936 12V21H7v-.019zM13 13h3l-4-5-4 5h3v4h2v-4z", "fill", "rgba(255,255,255,1)"], ["type", "file", "name", "image", "id", "fileupload", 3, "change"], [1, "form-group", "buttons"], ["type", "submit", "name", "btnSubmit", "value", "Post", 1, "btn", "btn-primary", "btnContact", 3, "disabled"], ["type", "submit", "name", "btncancel", "routerLink", "/profile", "value", "Cancel", 1, "btn", "btn-primary", "btnContact"], ["name", "Description", "formControlName", "Description", "placeholder", "Enter the Description", "required", "", 1, "form-control", 2, "width", "100%", "height", "150px"]],
         template: function UpdatePostComponent_Template(rf, ctx) {
           if (rf & 1) {
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "app-header");
@@ -5388,7 +5399,7 @@
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](11, "div", 8);
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](12, "input", 9);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](12, "input", 6);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](13, UpdatePostComponent_small_13_Template, 2, 1, "small", 7);
 
@@ -5396,45 +5407,45 @@
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](14, "div", 8);
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](15, "select", 10);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](15, "select", 9);
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](16, "option", 11);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](16, "option", 10);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](17);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](18, "option", 12);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](18, "option", 11);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](19, "Sports");
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](20, "option", 13);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](20, "option", 12);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](21, "Education");
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](22, "option", 14);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](22, "option", 13);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](23, "Fashion");
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](24, "option", 15);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](24, "option", 14);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](25, "Technology");
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](26, "option", 16);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](26, "option", 15);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](27, "Food");
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](28, "option", 17);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](28, "option", 16);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](29, "LifeStyle");
 
@@ -5448,17 +5459,17 @@
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](31, "div", 8);
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](32, "label", 18);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](32, "label", 17);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](33, "span");
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceSVG"]();
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](34, "svg", 19);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](34, "svg", 18);
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](35, "path", 20);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](35, "path", 19);
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](36, "path", 21);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](36, "path", 20);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
@@ -5468,7 +5479,7 @@
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnamespaceHTML"]();
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](38, "input", 22);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](38, "input", 21);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("change", function UpdatePostComponent_Template_input_change_38_listener($event) {
               return ctx.onFileChange($event);
@@ -5480,13 +5491,13 @@
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](39, "div", 23);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](39, "div", 22);
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](40, "input", 24);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](40, "input", 23);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](41, "\xA0 ");
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](42, "input", 25);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](42, "input", 24);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
@@ -5496,7 +5507,7 @@
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](44, "div", 8);
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](45, "textarea", 26);
+            _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](45, "textarea", 25);
 
             _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](46, UpdatePostComponent_small_46_Template, 2, 1, "small", 7);
 
